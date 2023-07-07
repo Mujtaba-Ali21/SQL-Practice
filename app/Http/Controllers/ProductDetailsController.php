@@ -8,6 +8,7 @@ use App\Models\Rating;
 use App\Models\Product;
 use App\Models\Question;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ProductDetailsController extends Controller
 {
@@ -25,8 +26,21 @@ class ProductDetailsController extends Controller
         $rating->product_id = $id;
         $rating->save();
     
-        $averageRating = Rating::find($id);
-        $averageRating->updateAverageRating();
+        $averageRating = Rating::where('product_id', $id)
+            ->select(DB::raw('FLOOR(AVG(rating)) AS average_rating'))
+            ->value('average_rating');
+    
+        Product::where('id', $id)
+            ->update(['average_rating' => $averageRating]);
+
+        $rating->refresh();
+
+        $newVote = new Vote();
+        $newVote->rating_id = $rating->ID;
+        $newVote->product_id = $rating->product_id;
+        $newVote->helpful = 0;
+        $newVote->unhelpful = 0;
+        $newVote->save();
     
         return redirect()->back()->with('success', 'Product Rated Successfully');
     }
@@ -46,7 +60,7 @@ class ProductDetailsController extends Controller
 
     function createAnswer($id) {
         $question = Question::find($id);
-
+        session(['previousUrl' => url()->previous()]);
         return view('answer', ["question" => $question]);
     }
 
@@ -60,7 +74,8 @@ class ProductDetailsController extends Controller
         $answer->question_id = $id;
         $answer->save();
 
-        return redirect()->back()->with('success', 'Question Answerd Successfully');
+        $previousUrl = session('previousUrl');
+        return redirect($previousUrl)->with('success', 'Question Answerd Successfully');
         
     }
 

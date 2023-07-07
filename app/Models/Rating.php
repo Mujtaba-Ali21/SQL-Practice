@@ -11,7 +11,7 @@ class Rating extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['rating'];
+    protected $fillable = ['product_id', 'rating', 'message'];
 
     public function product()
     {
@@ -20,13 +20,7 @@ class Rating extends Model
 
     public function votes()
     {
-        return $this->hasMany(Vote::class, 'rating_id', 'id');
+        return $this->hasMany(Vote::class, 'rating_id', 'ID');
     }
 
-    public function updateAverageRating()
-    {
-        $averageRating = $this->avg('rating');
-        $this->product->average_rating = $averageRating;
-        $this->product->save();
-    }
 }

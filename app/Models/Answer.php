@@ -12,7 +12,8 @@ class Answer extends Model
 
     protected $fillable = ['answer'];
 
-    function questions() {
-        $this->hasMany(Question::class, 'question_id');
+    public function question()
+    {
+        return $this->belongsTo(Question::class);
     }
 }

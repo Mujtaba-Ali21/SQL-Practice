@@ -82,73 +82,82 @@
           -moz-box-shadow: -1px -2px 16px 0px rgba(0,0,0,0.34);
         }
 
-        select {
-      width: 400px;
-      max-width: 100%;
-      overflow-y: auto;
-      cursor: pointer;
-      padding: 15px 25px;
-      -webkit-appearance: none;
-      -moz-appearance: none;
-      border: none;
-      outline: none;
-      border-radius: 12px;
-      color: #444;
-      font-size: 18px;
-      box-shadow: -3px 3px 5px 0px rgba(0, 0, 0, 0.1);
-    }
+        .form-control {
+        width: 400px;
+        max-width: 100%;
+        overflow-y: auto;
+        padding: 15px 25px;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        border: none;
+        outline: none;
+        border-radius: 12px;
+        color: #444;
+        font-size: 18px;
+        box-shadow: -3px 3px 5px 0px rgba(0,0,0,0.10);
+        }
 
-    select option {
-      padding: 10px 20px;
-      margin-bottom: 8px;
-      border-radius: 12px;
-      background-color: rgb(238, 238, 238);
-      white-space: pre-wrap;
-      cursor: pointer;
-    }
+        select{
+        width: 400px;
+        max-width: 100%;
+        overflow-y: auto;
+        cursor: pointer;
+        padding: 15px 25px;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        border: none;
+        outline: none;
+        border-radius: 12px;
+        color: #444;
+        font-size: 18px;
+        box-shadow: -3px 3px 5px 0px rgba(0,0,0,0.10);
+      }
+      select option{
+        padding: 10px 20px;
+        margin-bottom: 8px;
+        border-radius: 12px;
+        background-color: rgb(238, 238, 238);
+        white-space: pre-wrap;
+        cursor: pointer;
+      }
+      select option:hover{
+        background-color: rgb(223, 223, 223);
+      }
+      select option:checked{
+        box-shadow: 0 0 10px 100px #595959 inset;
+      }
+      select::-webkit-scrollbar-track
+      {
+        background-color: #F5F5F5;
+        border-radius: 12px;
+      }
 
-    select option:hover {
-      background-color: rgb(223, 223, 223);
-    }
+      select::-webkit-scrollbar
+      {
+        width: 8px;
+        background-color: #F5F5F5;
+      }
 
-    select option:checked {
-      box-shadow: 0 0 10px 100px #595959 inset;
-    }
-
-    select::-webkit-scrollbar-track {
-      background-color: #f5f5f5;
-      border-radius: 12px;
-    }
-
-    select::-webkit-scrollbar {
-      width: 8px;
-      background-color: #f5f5f5;
-    }
-
-    select::-webkit-scrollbar-thumb {
-      background-color: rgb(225, 225, 225);
-      border-radius: 12px;
-      background-image: -webkit-linear-gradient(
-        90deg,
+      select::-webkit-scrollbar-thumb
+      {
+        background-color: rgb(225, 225, 225);
+        border-radius: 12px;
+        background-image: -webkit-linear-gradient(90deg,
         rgba(160, 160, 160, 0.2) 25%,
         transparent 25%,
         transparent 50%,
         rgba(160, 160, 160, 0.2) 50%,
         rgba(160, 160, 160, 0.2) 75%,
         transparent 75%,
-        transparent
-      );
-    }
-
-    select.fadeIn {
-      animation: fadeInDown 0.2s;
-    }
-
-    select.fadeOut {
-      animation: fadeInUp 0.2s;
-    }
-
-    .select-background {
+        transparent)
+      }
+      select.fadeIn {
+        animation: fadeInDown 0.2s;
+      }
+      select.fadeOut{
+        animation: fadeInUp 0.2s;
+      }
+      .select-background {
       position: fixed;
       top: 0;
       left: 0;
@@ -162,7 +171,7 @@
     }
 
     .select-box {
-      position: relat ive;
+      position: relative;
       z-index: 1000;
     }
 
@@ -170,60 +179,47 @@
       opacity: 1;
       visibility: visible;
     }
-
   </style>
 
 <body>
-  <div class="container register">
-    <div class="row">
-      <div class="col-md-10 register-right customShadow">
-        <ul class="nav nav-tabs nav-justified">
-          <li class="nav-item p-2">
-            <span class="nav-new" id="profile-tab">
-                Ask Question
-            </span>
-          </li>
-        </ul>
-        <div class="tab-content" id="myTabContent">
-          <div
-          class="tab-pane fade show active"
-          >
-          <h3 class="register-heading">Ask a Question</h3>
-          <div class="row register-form">
-                
-              @if($errors->any())
+    <div class="container register">
+      <div class="row">
+        <div class="col-md-10 register-right customShadow">
+          <ul class="nav nav-tabs nav-justified">
+            <li class="nav-item p-2">
+              <span class="nav-new" id="profile-tab">
+                Edit Answer
+              </span>
+            </li>
+          </ul>
+          <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active">
+              <h3 class="register-heading">Edit Answer</h3>
+              <div class="row register-form">
+                @if($errors->any())
                 <div class="alert mb-5 pt-2 px-5 text-dark shadow rounded mx-auto" style="background-color: #02C2FD; width: 25rem">
                   <ol>
-                      @foreach ($errors->all() as $errors)
-                          <li class="h6" style="font-size: 1.4rem;">{{ $errors }}</li>
-                      @endforeach
+                    @foreach ($errors->all() as $error)
+                    <li class="h6" style="font-size: 1.4rem;">{{ $error }}</li>
+                    @endforeach
                   </ol>
                 </div>
-              @endif
+                @endif
 
                 <div class="col-md-12">
-                  <form method="POST" enctype="multipart/form-data">
+                  <form method="POST" action="{{ url('/answer/edit/'.$data->ID) }}" enctype="multipart/form-data">
                     @csrf
-
-                    <select id="routeSelect" name="product">
-                        <optgroup label="Select a Product">
-                        @foreach ($data as $product)
-                            <option value="{{ $product->ID }}">
-                                {{ $product->productName }}
-                            </option>
-                        @endforeach   
+                    <div class="form-group">
+                      <select name="question" size="1" style="color: gray; background-color: #E9ECEF; cursor: none;">
+                        <optgroup label="{{ $data->question->product->productName }}">
+                          <option value="{{ $data->question_id }}" selected>{{ $data->question->question }}</option>
                         </optgroup>
                       </select>
+      
+                      <input class="form-control mt-2" type="text" name="answer" placeholder="Answer" value="{{ $data->answer }}">
 
-                    <div class="form-group mt-2">
-                      <input
-                        type="text"
-                        class="form-control"
-                        name="question"
-                        placeholder="Question"
-                      />
                     </div>
-                    <input type="submit" class="btnRegister" value="Continue" />
+                    <input type="submit" class="btnRegister" value="Save Changes" />
                   </form>
                 </div>
               </div>

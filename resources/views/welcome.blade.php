@@ -911,7 +911,7 @@
                                     <i class="bi bi-star-fill" style="color: #cccccc; height: 20px;"></i>
                                     @endif
                                 @endfor
-                                <span class="ratings-text">( {{ $product->total_reviews ? $product->total_reviews : 0 }} )</span>
+                                <span class="ratings-text">( {{ $product->ratings->count() }} )</span>
                             </div>
                           </div>
                         </div>

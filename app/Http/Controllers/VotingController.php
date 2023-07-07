@@ -2,40 +2,49 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Rating;
 use App\Models\Vote;
+use App\Models\Rating;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class VotingController extends Controller
 {
-    public function helpful(Request $req, $id)
+    public function helpful(Request $request, $id)
     {
         $rating = Rating::findOrFail($id);
-        
-        $vote = Vote::where('rating_id', $rating->id)->first();
-        
-        $vote = new Vote();
-        $vote->rating_id = $rating->ID;
-        $vote->product_id = $rating->product_id;
-        $vote->helpful = 1;
-        $vote->unhelpful = 0;
-        $vote->save();
-        
+    
+        $productVote = $rating->votes()->first();
+    
+            if (!$productVote) {
+                DB::table('votes')->insert([
+                    'rating_id' => $rating->ID,
+                    'product_id' => $rating->product_id,
+                    'helpful' => 1,
+                    'unhelpful' => 0
+                ]);
+            } else {
+                DB::table('votes')->where('rating_id', $rating->ID)->increment('helpful');
+            }
+    
         return response()->json(['success' => true, 'action' => 'added']);
-    }
+    }   
 
     public function unhelpful(Request $request, $id)
     {
         $rating = Rating::findOrFail($id);
 
-        $vote = Vote::where('rating_id', $rating->id)->first();
+        $vote = $rating->votes()->first();
        
-            $vote = new Vote();
-            $vote->rating_id = $rating->ID;
-            $vote->product_id = $rating->product_id;
-            $vote->helpful = 0;
-            $vote->unhelpful = 1;
-            $vote->save();
+            if (!$vote) {
+                DB::table('votes')->insert([
+                    'rating_id' => $rating->ID,
+                    'product_id' => $rating->product_id,
+                    'helpful' => 0,
+                    'unhelpful' => 1
+                ]);
+            } else {
+                DB::table('votes')->where('rating_id', $rating->ID)->increment('unhelpful');
+            }
 
         return response()->json(['success' => true, 'action' => 'added']);
     }

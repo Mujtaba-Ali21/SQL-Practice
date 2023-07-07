@@ -1288,7 +1288,7 @@
                   <div class="reviews">
                     <div class="d-flex justify-content-between">
                     <h3>Reviews ({{$totalReviews}})</h3>
-                    <span class="h6">{{ $product->averageRating ? 'Average Rating: ' . $product->averageRating . ' / 5' : 'Not Rated Yet' }}</span>
+                    <span class="h6">{{ $product->average_rating ? 'Average Rating: ' . $product->average_rating . ' / 5' : 'Not Rated Yet' }}</span>
                   </div>
                     <div class="reviews">
                       @foreach ($ratings as $rating)
@@ -1803,33 +1803,32 @@
     <!-- End .mobile-menu-container -->
 
   <script>
-      $(document).ready(function () {
-      const stars = document.querySelectorAll(".ratings-container i");
+    const stars = document.querySelectorAll(".ratings-container i");
 
-      stars.forEach((star, index1) => {
-        star.addEventListener("click", () => {
-          stars.forEach((star, index2) => {
-            index1 >= index2
-              ? star.classList.add("active")
-              : star.classList.remove("active");
-          });
+    stars.forEach((star, index1) => {
+      star.addEventListener("click", () => {
+        stars.forEach((star, index2) => {
+          index1 >= index2
+            ? star.classList.add("active")
+            : star.classList.remove("active");
         });
       });
+    });
 
-      $("#exampleModal").on("hidden.bs.modal", function () {
-        stars.forEach((star) => {
-          star.classList.remove("active");
-        });
+    $("#exampleModal").on("hidden.bs.modal", function () {
+      stars.forEach((star) => {
+        star.classList.remove("active");
       });
+    });
 
-      function setRating(rating) {
-        $("#rating").val(rating);
-      }
+    function setRating(rating) {
+      document.getElementById("rating").value = rating;
+    }
 
+    $(document).ready(function () {
       $(".toggle-model").click(function () {
         $("#exampleModal").modal("show");
       });
-
       $(".model-close").click(function () {
         $("#exampleModal").modal("hide");
       });
@@ -1849,7 +1848,6 @@
       openModalBtn.on("click", openModal);
       closeModalBtn.on("click", closeModal);
 
-
       $(".mark-helpful").on("click", function (event) {
         event.preventDefault();
 
@@ -1860,7 +1858,7 @@
           url: "/productDetails/helpful/" + ratingId,
           type: "POST",
           data: {
-          _token: "{{ csrf_token() }}",
+            _token: "{{ csrf_token() }}",
           },
           success: function (response) {
             if (response.success) {
@@ -1920,7 +1918,6 @@
         });
       });
     });
-
   </script>
   </body>
 </html>
